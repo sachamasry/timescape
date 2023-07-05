@@ -4,7 +4,7 @@
             <formattedString>
                 <span text=" {message}" />
                 <span text=" {get_hour_string(current_time)}" />
-                <span text=" o'clock" />
+                <span text=" {get_minutes_string(current_time)}" />
             </formattedString>
         </label>
 
@@ -23,6 +23,12 @@
 <script lang="ts">
 let hours_in_words = ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
 
+let minute_block_in_words = ["o'clock", "five", "ten", "quarter", "twenty", "twenty-five", "half", "thirty-five", "quarter", "ten", "five"];
+
+let hour_prefix = "";
+
+let hour_suffix = "";
+
 let current_time = new Date;
 
 function get_hour_string(date) {
@@ -39,6 +45,24 @@ function get_hour_in_non_military_format(hour) {
   } else {
     return false
   }
+}
+
+function get_minutes_breakdown(date) {
+  let minutes = date.getMinutes();
+
+  let five_minute_block =
+    Math.floor(minutes / 5);
+
+  let minutes_past_block = minutes % 5
+
+  return {
+    block: five_minute_block,
+    minutes: minutes_past_block
+  }
+}
+
+function get_minutes_string(date) {
+  return minute_block_in_words[get_minutes_breakdown(date).block];
 }
 
     let message: string = "it is"
