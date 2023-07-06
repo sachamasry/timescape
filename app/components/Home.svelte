@@ -1,10 +1,11 @@
 <page>
-    <gridLayout>
+  <gridLayout backgroundColor="#000" color="#eee">
         <label class="info">
             <formattedString>
-                <span text=" {message}" />
-                <span text=" {get_hour_string(current_time)}" />
+                <span text="{message}" />
                 <span text=" {get_minutes_string(current_time)}" />
+                <span text=" {time_joiner_string(current_time)}" />
+                <span text=" {get_hour_string(current_time)}" />
             </formattedString>
         </label>
 
@@ -23,7 +24,7 @@
 <script lang="ts">
 let hours_in_words = ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
 
-let minute_block_in_words = ["o'clock", "five", "ten", "quarter", "twenty", "twenty-five", "half", "thirty-five", "quarter", "ten", "five"];
+let minute_block_in_words = ["o'clock", "five", "ten", "quarter", "twenty", "twenty-five", "half", "twenty-five", "quarter", "ten", "five"];
 
 let hour_prefix = "";
 
@@ -32,7 +33,7 @@ let hour_suffix = "";
 let current_time = new Date;
 
 function get_hour_string(date) {
-  let hour = date.getHours();
+  let hour = date.getHours() + get_hour_adder(date);
 
   return hours_in_words[get_hour_in_non_military_format(hour)];
 }
@@ -61,8 +62,24 @@ function get_minutes_breakdown(date) {
   }
 }
 
+function get_hour_adder(date) {
+  if (get_minutes_breakdown(date).block > 6) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
 function get_minutes_string(date) {
   return minute_block_in_words[get_minutes_breakdown(date).block];
+}
+
+function time_joiner_string(date) {
+  if (get_minutes_breakdown(date).block > 6) {
+    return "to"
+  } else {
+    return "past"
+  }
 }
 
     let message: string = "it is"
