@@ -2,12 +2,7 @@
   <gridLayout backgroundColor="#000" color="#eee">
         <label class="info">
             <formattedString>
-                <span text="{message}" />
-                <span text=" {minute_block_string}" />
-                <span text="{time_joiner_string}" />
-                <span text=" {hour_string}" />
-                <span text=" {hour_terminator_string}" />
-                <span text=" {minutes_display}" />
+                <span text="{time_message}" />
             </formattedString>
         </label>
 
@@ -25,11 +20,11 @@
 
 <script lang="ts">
 let hours_in_words = ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
-
 let minute_block_in_words = ["", "five", "ten", "quarter", "twenty", "twenty-five", "half", "thirty-five", "twenty", "quarter", "ten", "five"];
 
 let current_time = new Date();
-
+let time_message_list = ["it is", "", "", "", "", ""];
+let time_message = time_message_list.join(' ');
 let message: string = "it is"
 let minute_block_string = get_minute_block_string(current_time);
 let minutes_display = get_minutes_string(current_time);
@@ -39,13 +34,19 @@ let hour_terminator_string = get_on_the_hour(current_time);
 let seconds_string = current_time.getSeconds().toString();
 
 var x = setInterval(() => {
-  current_time = new Date();
-  minute_block_string = get_minute_block_string(current_time);
-  minutes_display = get_minutes_string(current_time);
-  time_joiner_string = get_time_joiner_string(current_time);
-  hour_string = get_hour_string(current_time);
-  hour_terminator_string = get_on_the_hour(current_time);
-  seconds_string = current_time.getSeconds().toString();
+    current_time = new Date();
+    minute_block_string = get_minute_block_string(current_time);
+    time_message_list[1] = minute_block_string;
+    time_joiner_string = get_time_joiner_string(current_time);
+    time_message_list[2] = time_joiner_string;
+    hour_string = get_hour_string(current_time);
+    time_message_list[3] = hour_string;
+    hour_terminator_string = get_on_the_hour(current_time);
+    time_message_list[4] = hour_terminator_string;
+    minutes_display = get_minutes_string(current_time);
+    time_message_list[5] = minutes_display;
+    seconds_string = current_time.getSeconds().toString();
+    time_message = time_message_list.join(' ');
 }, 1000)
 
 
@@ -102,10 +103,10 @@ function get_minutes_string(date) {
 function get_time_joiner_string(date) {
   if (get_minutes_breakdown(date).block === 0) {
     return ""
-  } else if (get_minutes_breakdown(date).block <= 6){
-    return " past"
+  } else if (get_minutes_breakdown(date).block <= 7){
+    return "past"
   } else {
-    return " to"
+    return "to"
   }
 }
 
