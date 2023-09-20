@@ -4,7 +4,7 @@
             <formattedString>
                 <span text="{message}" />
                 <span text=" {minute_block_string}" />
-                <span text=" {time_joiner_string}" />
+                <span text="{time_joiner_string}" />
                 <span text=" {hour_string}" />
                 <span text=" {hour_terminator_string}" />
                 <span text=" {minutes_display}" />
@@ -26,7 +26,7 @@
 <script lang="ts">
 let hours_in_words = ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
 
-let minute_block_in_words = ["", "five", "ten", "quarter", "twenty", "twenty-five", "half", "twenty-five", "twenty", "quarter", "ten", "five"];
+let minute_block_in_words = ["", "five", "ten", "quarter", "twenty", "twenty-five", "half", "thirty-five", "twenty", "quarter", "ten", "five"];
 
 let current_time = new Date();
 
@@ -56,7 +56,7 @@ function get_hour_string(date) {
 }
 
 function get_hour_in_non_military_format(hour) {
-  if (hour >= 0 && hour > 12) {
+  if (hour > 12) {
     return (hour - 12)
   } else if (hour >=0 && hour <= 12) {
     return hour
@@ -80,7 +80,7 @@ function get_minutes_breakdown(date) {
 }
 
 function get_hour_adder(date) {
-  if (get_minutes_breakdown(date).block > 6) {
+  if (get_minutes_breakdown(date).block > 7) {
     return 1
   } else {
     return 0
@@ -103,9 +103,9 @@ function get_time_joiner_string(date) {
   if (get_minutes_breakdown(date).block === 0) {
     return ""
   } else if (get_minutes_breakdown(date).block <= 6){
-    return "past"
+    return " past"
   } else {
-    return "to"
+    return " to"
   }
 }
 
