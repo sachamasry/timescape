@@ -1,21 +1,19 @@
 <page>
-  <gridLayout backgroundColor="#000" color="#eee">
-        <label class="info">
-            <formattedString>
-                <span text="{time_message}" />
-            </formattedString>
-        </label>
-
-        <label>
-          <formattedString>
-          </formattedString>
-        </label>
-
-        <label>
-          <formattedString>
-          </formattedString>
-        </label>
-    </gridLayout>
+    <rootLayout>
+        <gridLayout backgroundColor="#000" color="#eee">
+            <label class="info"
+                   textTransform="uppercase"
+            >
+                <formattedString
+                >
+                    <span text="{time_message}"
+                          textAlignment="center"
+                          letterSpacing="2"
+                    />
+                </formattedString>
+            </label>
+        </gridLayout>
+    </rootLayout>
 </page>
 
 <script lang="ts">
@@ -31,7 +29,6 @@ let minutes_display = get_minutes_string(current_time);
 let time_joiner_string = get_time_joiner_string(current_time);
 let hour_string = get_hour_string(current_time);
 let hour_terminator_string = get_on_the_hour(current_time);
-let seconds_string = current_time.getSeconds().toString();
 
 var x = setInterval(() => {
     current_time = new Date();
@@ -43,10 +40,9 @@ var x = setInterval(() => {
     time_message_list[3] = hour_string;
     hour_terminator_string = get_on_the_hour(current_time);
     time_message_list[4] = hour_terminator_string;
-    minutes_display = get_minutes_string(current_time);
-    time_message_list[5] = minutes_display;
-    seconds_string = current_time.getSeconds().toString();
-    time_message = time_message_list.join(' ');
+    // minutes_display = get_minutes_string(current_time);
+    // time_message_list[5] = minutes_display;
+    time_message = time_message_list.filter(entry => entry.trim()).join(' ');
 }, 1000)
 
 
@@ -125,8 +121,10 @@ function get_on_the_hour(date) {
     }
 
     .info {
-        font-size: 20;
+        font-family: 'HelveticaNeue-Medium';
+        font-size: 32;
         horizontal-align: center;
+        letter-spacing: 0.4rem;
         vertical-align: center;
     }
 </style>
