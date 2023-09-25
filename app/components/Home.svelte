@@ -1,7 +1,24 @@
 <page>
     <rootLayout>
-        <gridLayout backgroundColor="#000" color="#eee">
+        <gridLayout
+            columns="40, *, 40"
+            rows="40, *, 40"
+            backgroundColor="#000" color="#eee">
+            <label row="0" column="0"
+                   class="minute-pip"
+                   style="margin-top: 24; margin-left: 24;"
+                   textAlignment="center"
+                   text="{minutes_array[0]}"
+            />
+            <label row="0" column="2"
+                   class="minute-pip"
+                   style="margin-top: 24; margin-right: 24;"
+                   textAlignment="center"
+                   text="{minutes_array[1]}"
+            />
             <label class="info"
+                   row="1"
+                   column="1"
                    textTransform="uppercase"
             >
                 <formattedString
@@ -12,6 +29,18 @@
                     />
                 </formattedString>
             </label>
+            <label row="2" column="0"
+                   class="minute-pip"
+                   style="margin-bottom: 24; margin-left: 24;"
+                   textAlignment="center"
+                   text="{minutes_array[2]}"
+            />
+            <label row="2" column="2"
+                   class="minute-pip"
+                   style="margin-bottom: 24; margin-right: 24;"
+                   textAlignment="center"
+                   text="{minutes_array[3]}"
+            />
         </gridLayout>
     </rootLayout>
 </page>
@@ -29,6 +58,7 @@ let minutes_display = get_minutes_string(current_time);
 let time_joiner_string = get_time_joiner_string(current_time);
 let hour_string = get_hour_string(current_time);
 let hour_terminator_string = get_on_the_hour(current_time);
+let minutes_array = ["", "", "", ""]
 
 var x = setInterval(() => {
     current_time = new Date();
@@ -41,6 +71,7 @@ var x = setInterval(() => {
     hour_terminator_string = get_on_the_hour(current_time);
     time_message_list[4] = hour_terminator_string;
     // minutes_display = get_minutes_string(current_time);
+    minutes_array = get_minute_array(current_time);
     // time_message_list[5] = minutes_display;
     time_message = time_message_list.filter(entry => entry.trim()).join(' ');
 }, 1000)
@@ -96,6 +127,23 @@ function get_minutes_string(date) {
   return minutes_display;
 }
 
+function get_minute_array(date) {
+    let minute_array = ["", "", "", ""]
+    let minutes = get_minutes_breakdown(date).minutes;
+    if (minutes === 0) {
+        minute_array = ["", "", "", ""]
+    } else if (minutes === 1) {
+        minute_array = ["•", "", "", ""]
+    } else if (minutes === 2) {
+        minute_array = ["•", "•", "", ""]
+    } else if (minutes === 3) {
+        minute_array = ["•", "•", "•", ""]
+    } else if (minutes === 4) {
+        minute_array = ["•", "•", "•", "•"]
+    }
+    return minute_array;
+}
+
 function get_time_joiner_string(date) {
   if (get_minutes_breakdown(date).block === 0) {
     return ""
@@ -120,11 +168,21 @@ function get_on_the_hour(date) {
         color: #3A53FF;
     }
 
+.info, .minute-pip {
+    font-family: 'HelveticaNeue-Bold';
+    font-size: 24;
+    letter-spacing: 0.4rem;
+}
+
     .info {
-        font-family: 'HelveticaNeue-Medium';
-        font-size: 32;
         horizontal-align: center;
-        letter-spacing: 0.4rem;
         vertical-align: center;
     }
+
+.minute-pip {
+    height: 16;
+    horizontal-align: center;
+    vertical-align: center;
+    width: 16;
+}
 </style>
